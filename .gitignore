@@ -1,0 +1,8 @@
+.env
+data/seen_urls.json
+data/industry_events.json
+data/industry_events.csv
+data/top10_events.json
+data/alert_emails.json
+__pycache__/
+*.pyc
