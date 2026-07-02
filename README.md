@@ -1,287 +1,238 @@
-# PROSICHT — Endüstriyel Taşınma Ajanı
+<p align="center">
+  <img src="assets/banner.png" alt="AI Industrial News Intelligence Agent Banner" width="100%">
+</p>
 
-İnternetten endüstriyel taşınma sinyallerini otomatik olarak tespit eden, iş açısından önemini puanlayan ve web arayüzü ile e-posta bildirimleri aracılığıyla eyleme dönüştürülebilir istihbarat sunan otonom bir yapay zeka destekli haber tarama ajanı.
+<h1 align="center">AI Industrial News Intelligence Agent</h1>
 
-**Pro Sicht Yapay Zeka Yazılım Ar-Ge ve Proje Danışmanlık Sanayi ve Ticaret A.Ş** bünyesinde staj projesi kapsamında geliştirilmiştir.
+<p align="center">
+  An autonomous AI agent that monitors European industrial news, extracts structured business intelligence with an LLM, scores each opportunity, and delivers actionable leads through a live dashboard and automated email alerts.
+</p>
 
----
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/OpenAI-GPT--4o--mini-412991?style=for-the-badge&logo=openai&logoColor=white" alt="OpenAI">
+  <img src="https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" alt="Streamlit">
+  <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL">
+  <img src="https://img.shields.io/badge/License-Educational-lightgrey?style=for-the-badge" alt="License">
+</p>
 
-## Ne Yapıyor?
-
-Sistem, Avrupa'daki endüstriyel olayları — fabrika taşımaları, tesis kapanışları, yeni yatırımlar ve genişlemeler — tespit etmek amacıyla haber RSS beslemelerini sürekli olarak izler. Tespit edilen her olay için yapay zeka kullanılarak yapısal veri çıkarılır ve BIOS'un endüstriyel denetim ve makine görüşü hizmetleri açısından fırsatın ne kadar değerli olduğunu ölçen bir **BIOS-uygunluk skoru (0–100)** hesaplanır.
-
-80 ve üzeri puan alan olaylar, abone olan kullanıcılara otomatik olarak e-posta bildirimi gönderir — bu sayede CRM'de potansiyel müşteri (lead) oluşturma süreci simüle edilmiş olur.
-
----
-
-## Özellikler
-
-- **Otomatik RSS izleme** — birden fazla yapılandırılabilir haber beslemesini eş zamanlı olarak tarar
-- **Yapay zeka destekli veri çıkarımı** — ham makalelerden şirket, konum, sektör, yatırım tutarı ve istihdam verilerini çıkarmak için GPT-4o-mini kullanır
-- **BIOS-uygunluk skorlaması** — her olayı 5 kriter üzerinden değerlendirir: Teknik Karmaşıklık, Taşınma Kesinliği, Coğrafi Uyum, Sektör Uyumu ve Zaman Penceresi
-- **Avrupa coğrafi filtresi** — Avrupa dışındaki olayları otomatik olarak filtreler
-- **Tekilleştirme (deduplication)** — URL tabanlı ve içerik tabanlı tekilleştirme ile mükerrer kayıtlar önlenir
-- **İlk 10 sıralama** — her çalıştırmada en yüksek puanlı 10 fırsatı çıktı olarak verir
-- **Streamlit arayüzü** — İngilizce/Türkçe çeviri desteği olan interaktif web arayüzü
-- **RSS besleme yönetimi** — arayüzden doğrudan RSS beslemesi ekleme veya silme
-- **E-posta CRM bildirimleri** — yüksek skorlu olaylar (80+) için otomatik e-posta bildirimleri
-- **Makale özetleri** — her makale için yapay zeka tarafından oluşturulan 2–3 cümlelik özetler
-
-> **Not — PostgreSQL Veritabanı:** Sistem, tüm olayları kalıcı olarak saklamak için isteğe bağlı bir PostgreSQL veritabanı entegrasyonuna sahiptir. Varsayılan olarak bu özellik kapalıdır. Etkinleştirmek için aşağıdaki kurulum adımlarını takip edin ve `src/news_fetch.py` dosyasındaki ilgili yorum satırlarını açın.
+<p align="center">
+  Developed during an internship at <b>Pro Sicht AI Software R&D and Project Consulting Inc.</b>
+</p>
 
 ---
 
-## Proje Yapısı
+## Table of Contents
 
-```
-prosicht-agent/
-│
-├── src/                         # Tüm Python betikleri
-│   ├── news_fetch.py            # Ana çekme, çıkarım ve puanlama betiği
-│   ├── dashboard.py             # Streamlit web arayüzü
-│   ├── database.py              # PostgreSQL bağlantısı ve kayıt mantığı (isteğe bağlı)
-│   └── crm_alert.py             # Yüksek skorlu olaylar için e-posta bildirim sistemi
-│
-├── data/                        # Otomatik oluşturulan veri dosyaları
-│   ├── top10_events.json        # En son çalıştırmadan ilk 10 sonuç
-│   ├── industry_events.json     # En son çalıştırmadan tüm sonuçlar
-│   ├── industry_events.csv      # CSV dışa aktarımı
-│   ├── rss_feeds.json           # Kullanıcı tarafından yapılandırılan RSS besleme listesi
-│   ├── alert_emails.json        # Abone olan e-posta adresleri
-│   └── seen_urls.json           # Tekilleştirme önbelleği
-│
-├── docs/                        # Dokümantasyon
-│   └── technical_report.docx   # Teknik proje raporu
-│
-├── requirements.txt             # Python bağımlılıkları
-├── .env                         # API anahtarları ve kimlik bilgileri (git'e dahil edilmez)
-├── .gitignore                   # Git'ten hariç tutulan dosyalar
-└── README.md                    # Bu dosya
-```
+- [Overview](#-overview)
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [How It Works](#-how-it-works)
+- [Opportunity Scoring](#-opportunity-scoring)
+- [Project Structure](#-project-structure)
+- [Installation](#%EF%B8%8F-installation)
+- [Usage](#-usage)
+- [Supported Event Types](#-supported-event-types)
+- [Screenshots](#-screenshots)
+- [Future Improvements](#-future-improvements)
+- [Acknowledgments](#-acknowledgments)
+- [License](#-license)
 
 ---
 
-## Teknoloji Yığını
+## 🚀 Overview
 
-| Bileşen | Teknoloji |
+The **AI Industrial News Intelligence Agent** continuously monitors European industrial news sources to surface business opportunities — factory relocations, plant closures, manufacturing investments, facility expansions, and supply chain changes — as they happen.
+
+Rather than just collecting articles, the system uses **OpenAI GPT-4o-mini** to extract structured event data, classify the event type, generate a concise summary, and calculate an AI-driven **Opportunity Score (0–100)** that estimates the business value of each lead.
+
+High-scoring opportunities automatically trigger email notifications, simulating a real CRM lead-generation workflow — turning a stream of raw news into a prioritized action list.
+
+---
+
+## ✨ Features
+
+- 🤖 **AI-powered extraction** — structured event data pulled from raw articles using GPT-4o-mini
+- 📰 **Automated RSS monitoring** across multiple configurable feeds
+- 📊 **AI-driven opportunity scoring** (0–100) across five weighted business criteria
+- 🌍 **Europe-focused filtering** to keep results relevant to the target market
+- 🔄 **URL & content-based deduplication** so the same event is never reported twice
+- 📝 **AI-generated summaries** for fast human review
+- 📈 **Interactive Streamlit dashboard** with sortable, filterable results
+- 📧 **Automatic email alerts** for high-priority opportunities
+- 🗄 **PostgreSQL integration** for persistent, queryable storage
+- 🌐 **English / Turkish interface** toggle
+
+---
+
+## 🛠 Tech Stack
+
+| Category | Technology |
 |---|---|
-| Programlama Dili | Python 3.10+ |
-| Yapay Zeka / LLM | OpenAI GPT-4o-mini |
-| RSS Ayrıştırma | feedparser |
-| Web Çekme | requests + BeautifulSoup4 |
-| Arayüz | Streamlit |
-| Veritabanı (isteğe bağlı) | PostgreSQL + psycopg2 |
-| E-posta Bildirimleri | smtplib (Gmail SMTP) |
-| Ortam Değişkenleri | python-dotenv |
+| Programming Language | Python 3.10+ |
+| AI / LLM | OpenAI GPT-4o-mini |
+| RSS Parsing | feedparser |
+| Web Scraping | requests + BeautifulSoup4 |
+| Dashboard | Streamlit |
+| Database | PostgreSQL |
+| Email | Gmail SMTP |
+| Environment / Config | python-dotenv |
 
 ---
 
-## Kurulum
+## 🔍 How It Works
 
-### 1. Depoyu klonlayın
+1. **Fetch** — RSS feeds are polled on a schedule and new articles are pulled in.
+2. **Deduplicate** — each article is checked against previously seen URLs and content before any AI call is made, so the pipeline never re-processes the same story.
+3. **Extract** — GPT-4o-mini reads the article and returns structured JSON: event type, companies involved, location, and a short summary.
+4. **Score** — the structured event is scored 0–100 across five weighted business criteria (see [Opportunity Scoring](#-opportunity-scoring)).
+5. **Store** — the event and its score are written to PostgreSQL for persistence and dashboard querying.
+6. **Alert** — events scoring above the "Reach Out" threshold trigger an automatic email notification.
+7. **Review** — the Streamlit dashboard surfaces everything, sortable by score, event type, and date, in English or Turkish.
 
-```bash
-git clone https://github.com/elaa001/prosicht-agent.git
-cd prosicht-agent
+---
+
+## 🎯 Opportunity Scoring
+
+Each detected event is evaluated against five business criteria, each contributing up to 20 points toward a total score of 0–100:
+
+| Criterion | Description |
+|---|---|
+| Technical Complexity | How complex the manufacturing process or facility is |
+| Relocation Certainty | How confident the extraction is that this is a real, actionable event |
+| Geographic Relevance | How well the location fits the target European market |
+| Industry Relevance | How closely the sector aligns with target industrial services |
+| Time Window | How urgent the opportunity is |
+
+### Recommended Actions
+
+| Score | Action |
+|---|---|
+| 80–100 | 🔥 Reach Out |
+| 50–79 | 👀 Monitor |
+| 0–49 | 📋 Further Watch |
+
+---
+
+## 📂 Project Structure
+
+```text
+AI-News-Agent/
+│
+├── assets/
+│   └── banner.png
+│
+├── src/
+│   ├── news_fetch.py       # RSS polling, dedup, AI extraction & scoring
+│   ├── dashboard.py        # Streamlit dashboard (EN/TR)
+│   ├── database.py         # PostgreSQL read/write layer
+│   └── crm_alert.py        # Email alert logic for high-score events
+│
+├── data/
+│   ├── top10_events.json
+│   ├── industry_events.json
+│   ├── industry_events.csv
+│   ├── rss_feeds.json
+│   ├── alert_emails.json
+│   └── seen_urls.json
+│
+├── requirements.txt
+├── .env
+├── .gitignore
+└── README.md
 ```
 
-### 2. Bağımlılıkları yükleyin
+---
+
+## ⚙️ Installation
 
 ```bash
+git clone https://github.com/elaa001/AI-News-Agent.git
+cd AI-News-Agent
 pip install -r requirements.txt
 ```
 
-### 3. Ortam değişkenlerini ayarlayın
-
-Proje kök dizininde bir `.env` dosyası oluşturun:
+Create a `.env` file in the project root:
 
 ```env
-OPENAI_API_KEY=openai_api_anahtariniz
+OPENAI_API_KEY=your_api_key
 
-# E-posta bildirimleri için
-ALERT_EMAIL=eposta@gmail.com
-ALERT_EMAIL_PASSWORD=gmail_uygulama_sifreniz
+ALERT_EMAIL=your_email@gmail.com
+ALERT_EMAIL_PASSWORD=your_gmail_app_password
 
-# Veritabanı (isteğe bağlı)
 DB_HOST=localhost
 DB_PORT=5432
-DB_NAME=prosicht
+DB_NAME=ai_news_agent
 DB_USER=postgres
-DB_PASSWORD=postgresql_sifreniz
+DB_PASSWORD=your_password
 ```
 
-### 4. PostgreSQL kurulumu (isteğe bağlı)
-
-Veritabanı özelliğini kullanmak istiyorsanız:
-
-- https://www.postgresql.org/download/ adresinden PostgreSQL'i indirin ve kurun
-- pgAdmin'i açın ve `prosicht` adında yeni bir veritabanı oluşturun
-- Sistem ilk çalıştırmada `events` tablosunu otomatik olarak oluşturacaktır
-
-Ardından `src/news_fetch.py` dosyasında şu adımları uygulayın:
-
-**Dosyanın en üstüne şu import satırını ekleyin:**
-```python
-from database import create_table, save_event
-```
-
-**`run_fetch()` fonksiyonunun başındaki yorum satırını açın:**
-```python
-# KAPALI (varsayılan):
-# create_table()
-
-# AÇIK (veritabanı etkin):
-create_table()
-```
-
-**`events.append(event)` satırının hemen altındaki yorum satırını açın:**
-```python
-# KAPALI (varsayılan):
-# save_event(event)
-
-# AÇIK (veritabanı etkin):
-save_event(event)
-```
-
-### 5. Gmail Uygulama Şifresi ayarlayın
-
-E-posta bildirimlerinin çalışması için:
-1. myaccount.google.com → Güvenlik → 2 Adımlı Doğrulama'yı etkinleştirin
-2. myaccount.google.com/apppasswords adresine gidin
-3. "PROSICHT" adında yeni bir uygulama şifresi oluşturun
-4. Oluşturulan 16 karakterli şifreyi `.env` dosyasına `ALERT_EMAIL_PASSWORD` olarak ekleyin
+> **Note:** `ALERT_EMAIL_PASSWORD` should be a [Gmail App Password](https://support.google.com/accounts/answer/185833), not your regular account password.
 
 ---
 
-## Kullanım
+## 🚀 Usage
 
-> **Önemli:** Tüm komutlar her zaman proje kök dizininden (`prosicht-agent/`) çalıştırılmalıdır.
-
-### Arayüzü başlatın
-
-```bash
-streamlit run src/dashboard.py
-```
-
-`http://localhost:8501` adresinde açılır
-
-### Çekme betiğini doğrudan çalıştırın
+Run the news monitoring pipeline (fetches, extracts, scores, alerts):
 
 ```bash
 python src/news_fetch.py
 ```
 
-### Arayüz butonları
+Launch the dashboard:
 
-| Buton | Ne Yapar? |
-|---|---|
-| **Run fetch now** | Yalnızca daha önce görülmemiş yeni makaleleri çeker (hızlı, günlük kullanım için) |
-| **Clear cache & refetch all** | Görülen URL önbelleğini siler ve her şeyi sıfırdan yeniden işler |
-| **Reset to default feeds** | Orijinal 5 varsayılan RSS beslemesini geri yükler |
-
----
-
-## BIOS-Uygunluk Skoru Nasıl Çalışır?
-
-Her olay 5 kriter üzerinden değerlendirilir; her kriter 0–20 puan değerindedir (toplam 0–100):
-
-| Kriter | Açıklama | Maks. Puan |
-|---|---|---|
-| **T** — Teknik Karmaşıklık | Üretim süreci ne kadar karmaşık? Yarı iletken ve otomotiv en yüksek puanı alır | 20 |
-| **R** — Taşınma Kesinliği | Olay doğrulanmış mı yoksa sadece söylenti mi? | 20 |
-| **G** — Coğrafi Uyum | Hedef konum Avrupa'da mı? | 20 |
-| **S** — Sektör Uyumu | BIOS bu sektöre hizmet veriyor mu? Otomotiv ve endüstriyel makineler en yüksek puanı alır | 20 |
-| **U** — Zaman Penceresi | Fırsat ne kadar acil? Yakın vadeli olaylar en yüksek puanı alır | 20 |
-
-### Skor eşikleri
-
-| Skor | Aksiyon | Anlamı |
-|---|---|---|
-| 80–100 | `reach_out` | Yüksek öncelik — şirketle hemen iletişime geçin |
-| 50–79 | `monitor` | Orta öncelik — gelişmeleri takip edin |
-| 0–49 | `tender_watch` | Düşük öncelik — ihale fırsatlarını izleyin |
-
----
-
-## Tespit Edilen Olay Tipleri
-
-| Tip | Açıklama |
-|---|---|
-| `relocation` | Üretimin bir konumdan diğerine taşınması |
-| `closure` | Fabrika veya tesisin kalıcı olarak kapatılması |
-| `expansion` | Mevcut bir tesisin büyütülmesi |
-| `greenfield` | Sıfırdan inşa edilen yeni bir tesis |
-| `brownfield` | Mevcut bir tesisin yenilenmesi veya yeniden kullanılması |
-| `production_transfer` | Belirli bir üretim hattının başka bir tesise taşınması |
-| `fdi_announcement` | Yabancı doğrudan yatırım duyurusu |
-| `supply_chain` | Tedarik zinciri yeniden yapılandırması |
-
----
-
-## Varsayılan Veri Kaynakları
-
-Sistem varsayılan olarak Avrupa endüstriyel haberlerini hedef alan Google News RSS beslemelerini kullanır:
-
-- Avrupa'da fabrika taşıması
-- Avrupa'da tesis kapanışı
-- Avrupa'da üretim yatırımı
-- Almanya, Fransa, Polonya, İtalya'da fabrika genişlemesi
-- Avrupa'da otomotiv tesisi kapanışı
-
-Kullanıcılar arayüz kenar çubuğu üzerinden herhangi bir geçerli RSS besleme URL'si ekleyebilir.
-
----
-
-## Çıktı Dosyaları
-
-### `data/top10_events.json`
-En son çalıştırmadan en yüksek puanlı 10 olay. Arayüz tarafından kullanılır.
-
-### `data/industry_events.json`
-En son çalıştırmada tespit edilen tüm olaylar, tam çıkarılan verilerle birlikte.
-
-### `data/industry_events.csv`
-Raporlama için tüm olayların elektronik tablo dışa aktarımı.
-
-### PostgreSQL `events` tablosu (isteğe bağlı)
-Tespit edilen tüm olayların kalıcı tarihsel kaydı. Hiçbir zaman üzerine yazılmaz — tüm çalıştırmalarda zaman içinde büyür.
-
----
-
-## .gitignore Önerisi
-
-```
-.env
-__pycache__/
-*.pyc
-data/seen_urls.json
-data/industry_events.json
-data/industry_events.csv
-data/top10_events.json
-data/alert_emails.json
+```bash
+streamlit run src/dashboard.py
 ```
 
-> `data/rss_feeds.json` git'e dahil edilmelidir — varsayılan besleme listesini içerir.
+---
+
+## 🌍 Supported Event Types
+
+- Factory Relocation
+- Plant Closure
+- Facility Expansion
+- Greenfield Investment
+- Brownfield Redevelopment
+- Production Transfer
+- Foreign Direct Investment (FDI)
+- Supply Chain Restructuring
 
 ---
 
-## Geliştirme Yol Haritası
+## 📸 Screenshots
 
-- [x] Adım 1 — Manuel araştırma ve olay tespiti
-- [x] Adım 2 — RSS çekme ve HTML normalleştirme
-- [x] Adım 3 — Yapay zeka destekli yapısal veri çıkarımı
-- [x] Adım 4 — BIOS-uygunluk fırsat skorlaması
-- [x] Adım 5 — Otomasyon döngüsü, tekilleştirme, CSV/JSON dışa aktarım
-- [x] Adım 6 — PostgreSQL veritabanı (isteğe bağlı), CRM e-posta bildirimleri, Streamlit arayüzü
+**Dashboard — Top Opportunities**
 
----
+![Dashboard](assets/dashboard.png)
 
-## Lisans
-
-Bu proje, Pro Sicht Yapay Zeka Yazılım Ar-Ge ve Proje Danışmanlık Sanayi ve Ticaret A.Ş bünyesinde staj projesi kapsamında geliştirilmiştir. Tüm hakları saklıdır.
+The dashboard surfaces the highest-scoring opportunities from the latest run, each with its AI-assigned score, recommended action, and the structured fields extracted from the source article (company, sector, event type, destination, investment, rationale, and summary).
 
 ---
 
-## Geliştirici
+## 🔮 Future Improvements
 
-PROSICHT stajyeri tarafından geliştirilmiştir — 2026
+- Multi-agent architecture
+- CRM API integration
+- Real-time monitoring
+- Cloud deployment (Render / Fly.io / Google Cloud Run)
+- Docker support
+- Advanced analytics
+- Semantic duplicate detection
+- Multi-language news analysis
+
+---
+
+## 🙏 Acknowledgments
+
+This project was developed during my internship at **Pro Sicht AI Software R&D and Project Consulting Inc.**
+
+Special thanks to the team for the opportunity to work on a real-world AI automation project focused on industrial business intelligence.
+
+---
+
+## 📄 License
+
+This repository is shared for **educational and portfolio purposes**.
+
+Some implementation concepts were inspired by an internship project completed at **Pro Sicht Smart Inspection with AI**
